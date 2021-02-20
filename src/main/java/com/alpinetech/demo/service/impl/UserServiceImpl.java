@@ -16,7 +16,7 @@ import java.util.List;
 @Service("impl1")
 public class UserServiceImpl implements UserService {
 @Autowired
-    private UserMapper userMapper;
+private UserMapper userMapper;
 
     @Override
     public List<User> selectAll() {
