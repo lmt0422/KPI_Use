@@ -18,7 +18,6 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserServiceImpl userService;
-
     @ResponseBody
     @GetMapping("/getUser")
     public Object getUser() {

@@ -13,9 +13,9 @@ mybatis:
   mapper-locations: classpath:mappers/*.xml
   type-aliases-package: com.alpinetech.demo.entity
     #开启驼峰命名
-#  configuration:
-#    map-underscore-to-camel-case: true
-  #showSql
-  logging:
-    level:
-    com.alpinetech.demo.mapper: debug
+##  configuration:
+##    map-underscore-to-camel-case: true
+#  #showSql
+#  logging:
+#    level:
+#    com.alpinetech.demo.mapper: debug
