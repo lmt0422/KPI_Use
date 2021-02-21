@@ -4,18 +4,18 @@ spring:
   #数据库连接配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.146.129:3306/springboot?useSSL=false&serverTimezone=CST&allowMultiQueries=true
+    url: jdbc:mysql://192.168.146.129:3306/dbmysql?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: dbtest_1
     password: abde1234
   #mybatis的相关配置
-  mybatis:
-    #mapper配置文件
-    mapper-locations: classpath:mapping/*.xml
-    type-aliases-package: com.alpinetech.demo.entity
-    #开启驼峰命名
-  configuration:
-    map-underscore-to-camel-case: true
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.alpinetech.demo.entity
+  #开启驼峰命名
+  #  configuration:
+  #    map-underscore-to-camel-case: true
   #showSql
-  logging:
-    level:
-    com.example.demo.mapper: debug
+#logging:
+#  level:
+#  com.alpinetech.demo.mapper: debug

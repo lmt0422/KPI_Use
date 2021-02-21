@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.alpinetech.demo.mapper.UserMapper">
     <!-- application.yml中type-aliases-package:未配置则需要用全名-->
-    <select id="selectAll" resultType="User">
-        SELECT * FROM R_EMPINFO
+    <select id="selectAll" resultType="com.alpinetech.demo.entity.User">
+        select * from r_empinfo where EIGYSYK_NO='1'
     </select>
 </mapper>
