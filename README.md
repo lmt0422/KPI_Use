@@ -2,7 +2,7 @@
 
 各种问题和解决方式
 
- 1.@RestControllerAdvice @ControllerAdvice注解无效 通用异常处理
+1.@RestControllerAdvice @ControllerAdvice注解无效 通用异常处理
   原因
   将GlobalExceptionHandler定义在另一个包里面，@SpringBootApplication无法自动加载到该注解
   解决方式
