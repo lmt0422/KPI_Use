@@ -1,4 +1,4 @@
-package com.alpinetech.demo.util;
+package com.alpinetech.common.util;
 
 /**
  * @author xmr

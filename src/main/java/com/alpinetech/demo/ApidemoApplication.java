@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.alpinetech.*"})
 @MapperScan(basePackages={"com.alpinetech.demo.mapper"})
 public class ApidemoApplication {
 
