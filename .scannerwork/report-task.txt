@@ -1,0 +1,6 @@
+projectKey=KPI_Use
+serverUrl=http://192.168.146.129:9000
+serverVersion=7.5.0.20543
+dashboardUrl=http://192.168.146.129:9000/dashboard?id=KPI_Use
+ceTaskId=AXfUKbJuaYEOOYCJ2rLM
+ceTaskUrl=http://192.168.146.129:9000/api/ce/task?id=AXfUKbJuaYEOOYCJ2rLM

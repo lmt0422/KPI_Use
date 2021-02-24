@@ -6,67 +6,67 @@ package com.alpinetech.demo.entity;
  * @description
  */
 public class User {
-    private String EIGYSYK_NO;
-    private String SEI_KJ;
-    private String SEX;
-    private String AGE;
-    private String MAIL1;
-    private String CREATEDAY;
-    private String UPDATADAY;
+    private String eigysykNo;
+    private String seiKj;
+    private String sex;
+    private String age;
+    private String mail1;
+    private String createday;
+    private String updataday;
 
-    public String getEIGYSYK_NO() {
-        return EIGYSYK_NO;
+    public String getEigysykNo() {
+        return eigysykNo;
     }
 
-    public void setEIGYSYK_NO(String EIGYSYK_NO) {
-        this.EIGYSYK_NO = EIGYSYK_NO;
+    public void setEigysykNo(String eigysykNo) {
+        this.eigysykNo = eigysykNo;
     }
 
-    public String getSEI_KJ() {
-        return SEI_KJ;
+    public String getSeiKj() {
+        return seiKj;
     }
 
-    public void setSEI_KJ(String SEI_KJ) {
-        this.SEI_KJ = SEI_KJ;
+    public void setSeiKj(String seiKj) {
+        this.seiKj = seiKj;
     }
 
-    public String getSEX() {
-        return SEX;
+    public String getSex() {
+        return sex;
     }
 
-    public void setSEX(String SEX) {
-        this.SEX = SEX;
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
-    public String getAGE() {
-        return AGE;
+    public String getAge() {
+        return age;
     }
 
-    public void setAGE(String AGE) {
-        this.AGE = AGE;
+    public void setAge(String age) {
+        this.age = age;
     }
 
-    public String getMAIL1() {
-        return MAIL1;
+    public String getMail1() {
+        return mail1;
     }
 
-    public void setMAIL1(String MAIL1) {
-        this.MAIL1 = MAIL1;
+    public void setMail1(String mail1) {
+        this.mail1 = mail1;
     }
 
-    public String getCREATEDAY() {
-        return CREATEDAY;
+    public String getCreateday() {
+        return createday;
     }
 
-    public void setCREATEDAY(String CREATEDAY) {
-        this.CREATEDAY = CREATEDAY;
+    public void setCreateday(String createday) {
+        this.createday = createday;
     }
 
-    public String getUPDATADAY() {
-        return UPDATADAY;
+    public String getUpdataday() {
+        return updataday;
     }
 
-    public void setUPDATADAY(String UPDATADAY) {
-        this.UPDATADAY = UPDATADAY;
+    public void setUpdataday(String updataday) {
+        this.updataday = updataday;
     }
 }

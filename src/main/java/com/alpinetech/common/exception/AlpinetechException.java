@@ -56,7 +56,7 @@ public class AlpinetechException extends RuntimeException {
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
-
+    @Override
     public String getMessage() {
         return errorMsg;
     }
