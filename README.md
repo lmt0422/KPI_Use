@@ -1,10 +1,77 @@
-# KPI_Use
+private ImageView agreeImageView;
+private ImageView privacyPersonaldataImageView;
+private ImageView monitorAgreeImageView;
 
-各种问题和解决方式
+private boolean isAgreeChecked = false;
+private boolean isPrivacyChecked = false;
+private boolean isMonitorChecked = false;
 
-1.@RestControllerAdvice @ControllerAdvice注解无效 通用异常处理
-  原因
-  将GlobalExceptionHandler定义在另一个包里面，@SpringBootApplication无法自动加载到该注解
-  解决方式
-  启动类的默认扫描路径是该类所在的包下面的所有java类，加上scanBasePackages参数
-  @SpringBootApplication(scanBasePackages = {"com.alpinetech.*"})
+// 規約同意ImageView
+agreeImageView = socialAccount.findViewById(R.id.agree_imageview);
+agreeImageView.setClickable(true);
+agreeImageView.setOnClickListener(v -> {
+    isAgreeChecked = !isAgreeChecked;
+    updateImageViewState(agreeImageView, isAgreeChecked);
+    
+    if(isAgreeChecked){
+        if (!isPrivacyChecked) {
+            isPrivacyChecked = true;
+            updateImageViewState(privacyPersonaldataImageView, true);
+        }
+        if (!isMonitorChecked) {
+            isMonitorChecked = true;
+            updateImageViewState(monitorAgreeImageView, true);
+        }
+    } else {
+        if (isPrivacyChecked) {
+            isPrivacyChecked = false;
+            updateImageViewState(privacyPersonaldataImageView, false);
+        }
+        if (isMonitorChecked) {
+            isMonitorChecked = false;
+            updateImageViewState(monitorAgreeImageView, false);
+        }
+    }
+    buttonLogin.setEnabled(isAgreeChecked);
+});
+
+// 個人情報の取り扱いImageView
+privacyPersonaldataImageView = socialAccount.findViewById(R.id.privacy_policy_imageview);
+privacyPersonaldataImageView.setClickable(true);
+privacyPersonaldataImageView.setOnClickListener(v -> {
+    isPrivacyChecked = !isPrivacyChecked;
+    updateImageViewState(privacyPersonaldataImageView, isPrivacyChecked);
+    updateAgreeImageViewState();
+});
+
+// モニタ規約ImageView
+monitorAgreeImageView = socialAccount.findViewById(R.id.monitor_agreement_imageview);
+monitorAgreeImageView.setClickable(true);
+monitorAgreeImageView.setOnClickListener(v -> {
+    isMonitorChecked = !isMonitorChecked;
+    updateImageViewState(monitorAgreeImageView, isMonitorChecked);
+    updateAgreeImageViewState();
+});
+
+// 更新ImageView状态的方法
+private void updateImageViewState(ImageView imageView, boolean isChecked) {
+    if (isChecked) {
+        imageView.setImageResource(R.drawable.ic_checkbox_checked); // 选中状态的图片
+    } else {
+        imageView.setImageResource(R.drawable.ic_checkbox_unchecked); // 未选中状态的图片
+    }
+}
+
+private void updateAgreeImageViewState() {
+    boolean allChecked = isPrivacyChecked && isMonitorChecked;
+    boolean anyUnChecked = !isPrivacyChecked || !isMonitorChecked;
+    
+    if (allChecked && !isAgreeChecked) {
+        isAgreeChecked = true;
+        updateImageViewState(agreeImageView, true);
+    } else if (anyUnChecked && isAgreeChecked) {
+        isAgreeChecked = false;
+        updateImageViewState(agreeImageView, false);
+    }
+    buttonLogin.setEnabled(isAgreeChecked);
+}
