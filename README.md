@@ -1,19 +1,26 @@
-$LocalEndpoint = "http://localhost:4566"
+-- 1. 切换到你的业务数据库 (非常关键，不要建在 CDB 里)
+ALTER SESSION SET CONTAINER = FREEPDB1;
 
-# AWS認証情報設定（LocalStack用ダミー）
-Initialize-AWSDefaultConfiguration `
-    -AccessKey "mock-key" `
-    -SecretKey "mock-secret" `
-    -Region "us-east-1"
+-- 2. 创建你的测试用户并赋予最高权限
+-- (如果报错说用户已存在没关系，继续往下跑)
+CREATE USER ORAUSR00 IDENTIFIED BY ORAUSR00;
+GRANT DBA TO ORAUSR00;
 
-Write-Host ">>> ローカルDockerに接続：S3 Bucket作成..." -ForegroundColor Cyan
+-- 3. 建表
+CREATE TABLE ORAUSR00.TEST_BULK_TABLE (
+    ID NUMBER, 
+    DATA_FILLER VARCHAR2(2000)
+);
 
-# S3 Bucket作成
-New-S3Bucket `
-    -BucketName "my-local-test-bucket" `
-    -EndpointUrl $LocalEndpoint
-
-Write-Host ">>> ローカルBucketリスト取得：" -ForegroundColor Yellow
-
-# Bucket一覧取得
-Get-S3Bucket -EndpointUrl $LocalEndpoint
+-- 4. 插入 10 万条“胖数据” (这大概会生成 150MB 的数据量)
+-- 这个过程大概需要十几秒，请耐心等待直到出现 "PL/SQL procedure successfully completed."
+BEGIN
+  FOR i IN 1..100000 LOOP
+    INSERT INTO ORAUSR00.TEST_BULK_TABLE VALUES (i, LPAD('A', 1500, 'A'));
+    IF MOD(i, 10000) = 0 THEN 
+      COMMIT; 
+    END IF;
+  END LOOP;
+  COMMIT;
+END;
+/
