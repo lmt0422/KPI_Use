@@ -1,0 +1,64 @@
+@echo off
+setlocal enabledelayedexpansion
+
+:: ======================================================
+:: S3 Deep Archive 一括リストア申請スクリプト (ステータス判定付き)
+:: ======================================================
+
+:: 1. 設定
+set "BUCKET_NAME=value-dev-s3-tokyo-logbk-001"
+set "LIST_FILE=%~dp0restoreList.txt"
+set "RESTORE_JSON=%~dp0restore.json"
+
+:: 2. ログファイル (日時付き)
+for /f %%i in ('powershell -command "Get-Date -Format yyyyMMdd_HHmmss"') do set DATETIME=%%i
+set "LOG_FILE=restore_smart_log_%DATETIME%.log"
+
+echo [INFO] ログファイル: %LOG_FILE%
+echo ======================================== >> %LOG_FILE%
+echo START TIME: %DATE% %TIME% >> %LOG_FILE%
+echo ======================================== >> %LOG_FILE%
+
+echo [INFO] S3オブジェクトのステータス確認およびリストア申請を開始します...
+
+:: 3. リストファイルを読み込み (タブ or スペース区切り)
+for /f "tokens=1,2 delims= " %%A in (%LIST_FILE%) do (
+    set "PREFIX=%%A"
+    set "FILENAME=%%B"
+    set "KEY=!PREFIX!!FILENAME!"
+    
+    echo.
+    echo [CHECKING] !KEY!
+    echo [CHECKING] !KEY! >> %LOG_FILE%
+
+    :: --- 核心ロジック：S3オブジェクトの状態を確認 ---
+    :: head-object を使用して Restore ステータスを抽出
+    for /f "usebackq tokens=*" %%S in (`powershell -command "$head = (aws s3api head-object --bucket %BUCKET_NAME% --key '!KEY!' --query 'Restore' --output text 2>$null); if ($head -eq $null) { 'NOT_STARTED' } elseif ($head -match 'ongoing-request=\"true\"') { 'IN_PROGRESS' } else { 'READY' }"`) do set STATUS=%%S
+
+    if "!STATUS!"=="READY" (
+        echo [SKIP] このオブジェクトは既にリストア済みです。
+        echo [SKIP] !KEY! Already Restored >> %LOG_FILE%
+    ) else if "!STATUS!"=="IN_PROGRESS" (
+        echo [WAIT] リストア処理中です。完了までお待ちください。
+        echo [WAIT] !KEY! Restoration in progress >> %LOG_FILE%
+    ) else (
+        :: NOT_STARTED の場合のみリストアを実行
+        echo [ACTION] リストア申請を実行中...
+        aws s3api restore-object --bucket %BUCKET_NAME% --key "!KEY!" --restore-request file://%RESTORE_JSON% >> %LOG_FILE% 2>&1
+        
+        if !errorlevel! equ 0 (
+            echo [OK] 申請が正常に受理されました。
+            echo [OK] !KEY! Request submitted >> %LOG_FILE%
+        ) else (
+            echo [ERR] 申請に失敗しました。パスまたは権限を確認してください。
+            echo [ERR] !KEY! Request failed >> %LOG_FILE%
+        )
+    )
+)
+
+echo.
+echo ======================================== >> %LOG_FILE%
+echo END TIME: %DATE% %TIME% >> %LOG_FILE%
+echo ======================================== >> %LOG_FILE%
+echo [終了] 処理が完了しました。ログを確認してください: %LOG_FILE%
+pause
